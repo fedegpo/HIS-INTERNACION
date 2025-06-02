@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title= title
+  body
+    h1= title
+    ul
+      each paciente in pacientes
+        li #{paciente.nombre} #{paciente.apellido} - DNI: #{paciente.dni}
+    a(href='/pacientes/nuevo') Nuevo Paciente

@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title= title
+  body
+    h1= title
+    form(action='/pacientes' method='POST')
+      label Nombre:
+      input(type='text' name='nombre' required)
+      br
+      label Apellido:
+      input(type='text' name='apellido' required)
+      br
+      label DNI:
+      input(type='text' name='dni' required)
+      br
+      label Edad:
+      input(type='number' name='edad' required)
+      br
+      button(type='submit') Guardar
