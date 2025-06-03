@@ -20,7 +20,7 @@ exports.procesarRegistro = async (req, res) => {
     await Usuario.create({
       nombreUsuario: nombreUsuario,
       contraseña: contraseña,
-      rol: rol || 'admisionista'
+      rol: rol || 'administrador'
     });
 
     res.redirect('/login');
