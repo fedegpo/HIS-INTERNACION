@@ -1,9 +1,30 @@
 {
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "mysql2": "^3.14.1",
     "pug": "^3.0.3",
     "sequelize": "^6.37.7"
-  }
+  },
+  "name": "his-internacion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedegpo/HIS-INTERNACION.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/fedegpo/HIS-INTERNACION/issues"
+  },
+  "homepage": "https://github.com/fedegpo/HIS-INTERNACION#readme"
 }
