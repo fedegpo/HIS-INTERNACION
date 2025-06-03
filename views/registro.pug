@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h2= title || 'Crear Nueva Cuenta'
+
+  if error
+    p.error-message(style="color: red;")= error
+
+  if success_msg
+    p.success-message(style="color: green;")= success_msg
+
+  form(method="POST", action="/registro")
+    div.form-group
+      label(for="nombreUsuario") Nombre de Usuario:
+      input(type="text", id="nombreUsuario", name="nombreUsuario", required, value=formData && formData.nombreUsuario ? formData.nombreUsuario : '')
+
+    div.form-group
+      label(for="contraseña") Contraseña:
+      input(type="password", id="contraseña", name="contraseña", required)
+
+    div.form-actions
+      button(type="submit") Registrarse
+
+  p Ya tienes una cuenta?
+    a(href="/login") Inicia Sesión aquí

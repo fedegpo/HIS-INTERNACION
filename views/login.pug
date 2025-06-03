@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Iniciar Sesión
+  if error
+    p.error= error
+  form(method="POST" action="/login")
+    div
+      label(for="nombreUsuario") Nombre de Usuario:
+      input(type="text" id="nombreUsuario" name="nombreUsuario" required)
+    div
+      label(for="contraseña") Contraseña:
+      input(type="password" id="contraseña" name="contraseña" required)
+    button(type="submit") Entrar
+  p ¿No tienes cuenta?
+    a(href="/registro") Regístrate aquí
