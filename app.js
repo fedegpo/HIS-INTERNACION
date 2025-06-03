@@ -9,7 +9,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // middlewares
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('./src/public'));
+app.use(express.static('public'));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -17,7 +17,7 @@ app.use(session({
 }));
 
 //rutas
-app.use('/', require('./src/routes'));
+app.use('/', require('/routes'));
 
 // iniciar servidor
 const PORT = process.env.PORT;
