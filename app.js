@@ -6,9 +6,12 @@ const pug = require('pug');
 const app = express();
 const sequelize = require('./db/connection');
 const authRoutes = require('./routes/authRoutes');
+const indexRouter = require('./routes/index');
+const admisionRoutes = require('./routes/admisionRoutes');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+
 
 // middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -31,8 +34,9 @@ app.use((req, res, next) => {
 });
 
 //rutas
-app.use('/', authRoutes);
-app.use('/', require('./routes'));
+app.use('/', indexRouter);
+app.use('/', authRoutes); 
+app.use('/admisiones', admisionRoutes);
 
 // iniciar servidor
 const PORT = process.env.PORT;
