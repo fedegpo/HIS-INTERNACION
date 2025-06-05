@@ -1,2 +1,57 @@
 extends ../layout
 
+block content
+  h2= title
+
+  if error
+    p.error-message(style="color: red;")= error
+
+  form(method="POST", action="/admisiones/nueva")
+
+    fieldset
+      legend Datos del Paciente
+      div.form-group
+        label(for="dniPaciente") DNI del Paciente:
+        input(type="text", id="dniPaciente", name="dniPaciente", required, value=formData && formData.dniPaciente ? formData.dniPaciente : '')
+      div.form-group
+        label(for="nombrePaciente") Nombres del Paciente:
+        input(type="text", id="nombrePaciente", name="nombrePaciente", required, value=formData && formData.nombrePaciente ? formData.nombrePaciente : '')
+      div.form-group
+        label(for="apellidoPaciente") Apellidos del Paciente:
+        input(type="text", id="apellidoPaciente", name="apellidoPaciente", required, value=formData && formData.apellidoPaciente ? formData.apellidoPaciente : '')
+      div.form-group
+        label(for="fechaNacimientoPaciente") Fecha de Nacimiento:
+        input(type="date", id="fechaNacimientoPaciente", name="fechaNacimientoPaciente", required, value=formData && formData.fechaNacimientoPaciente ? formData.fechaNacimientoPaciente : '')
+      div.form-group
+        label(for="generoPaciente") Género:
+        select(id="generoPaciente", name="generoPaciente", required)
+          option(value="", disabled, selected=!(formData && formData.generoPaciente)) Selecciona...
+          option(value="M", selected=(formData && formData.generoPaciente === 'M')) Masculino
+          option(value="F", selected=(formData && formData.generoPaciente === 'F')) Femenino
+          option(value="O", selected=(formData && formData.generoPaciente === 'O')) Otro
+
+    fieldset
+      legend Datos de la Admisión
+      div.form-group
+        label(for="fechaHoraAdmision") Fecha y Hora de Admisión:
+        input(type="datetime-local", id="fechaHoraAdmision", name="fechaHoraAdmision", required, value=formData && formData.fechaHoraAdmision ? formData.fechaHoraAdmision : '')
+      div.form-group
+        label(for="tipoAdmision") Tipo de Admisión:
+        select(id="tipoAdmision", name="tipoAdmision", required)
+          option(value="", disabled, selected=!(formData && formData.tipoAdmision)) Selecciona...
+          option(value="Programada", selected=(formData && formData.tipoAdmision === 'Programada')) Programada
+          option(value="Derivación Médica", selected=(formData && formData.tipoAdmision === 'Derivación Médica')) Derivación Médica
+          option(value="Emergencia", selected=(formData && formData.tipoAdmision === 'Emergencia')) Emergencia
+          option(value="Derivación Guardia", selected=(formData && formData.tipoAdmision === 'Derivación Guardia')) Derivación Guardia
+      div.form-group
+        label(for="motivoDeAdmision") Motivo de Admisión / Diagnóstico Presuntivo:
+        textarea(id="motivoDeAdmision", name="motivoDeAdmision", rows="4", required)= formData && formData.motivoDeAdmision ? formData.motivoDeAdmision : ''
+      div.form-group
+        label(for="medicoDerivante") Médico Derivante (si aplica):
+        input(type="text", id="medicoDerivante", name="medicoDerivante", value=formData && formData.medicoDerivante ? formData.medicoDerivante : '')
+      div.form-group
+        label(for="datosSeguroMedico") Datos del Seguro Médico (Nombre, N° Póliza, etc.):
+        textarea(id="datosSeguroMedico", name="datosSeguroMedico", rows="3")= formData && formData.datosSeguroMedico ? formData.datosSeguroMedico : ''
+
+    div.form-actions
+      button(type="submit") Registrar Admisión

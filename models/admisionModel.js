@@ -10,12 +10,8 @@ Admision.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    fechaDeAdmision: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    horaDeAdmision: {
-      type: DataTypes.TIME,
+    fechaHoraAdmision: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
     motivoDeAdmision: {

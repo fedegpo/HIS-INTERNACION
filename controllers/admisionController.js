@@ -17,10 +17,10 @@ async function procesarNuevaAdmision(req, res) {
     console.log('Datos recibidos para la admisión:', req.body);
     const {
       dniPaciente,
-      nombrePaciente,
-      apellidoPaciente,
-      fechaNacimientoPaciente,
-      generoPaciente,
+      nombrePaciente: formNombrePaciente,
+      apellidoPaciente: formApellidoPaciente,
+      fechaNacimientoPaciente: formFechaNacimiento,
+      generoPaciente: formGenero,
       fechaHoraAdmision,
       motivoDeAdmision,
       tipoAdmision,
@@ -42,17 +42,38 @@ async function procesarNuevaAdmision(req, res) {
     const [pacienteEncontradoOcreado, fueCreado] = await Paciente.findOrCreate({
       where: { dni: dniPaciente },
       defaults: {
-        nombres: nombrePaciente,
-        apellidos: apellidoPaciente,
+        nombrePaciente: formNombrePaciente,
+        apellidoPaciente: formApellidoPaciente,
         dni: dniPaciente,
-        fechaNacimiento: fechaNacimientoPaciente,
-        genero: generoPaciente,
+        fechaNacimientoPaciente: formFechaNacimiento,
+        genero: formGenero,
       }
     });
     paciente = pacienteEncontradoOcreado;
 
     if (!fueCreado) {
-      console.log(`Paciente encontrado con DNI: ${dniPaciente}, ID: ${paciente.id}`);
+      let necesitaGuardar = false;
+      if (formNombrePaciente && paciente.nombrePaciente !== formNombrePaciente) {
+        paciente.nombrePaciente = formNombrePaciente;
+        necesitaGuardar = true;
+      }
+      if (formApellidoPaciente && paciente.apellidoPaciente !== formApellidoPaciente) {
+        paciente.apellidoPaciente = formApellidoPaciente;
+        necesitaGuardar = true;
+      }
+      if (formFechaNacimiento && paciente.fechaNacimientoPaciente !== formFechaNacimiento) {
+        paciente.fechaNacimientoPaciente = formFechaNacimiento;
+        necesitaGuardar = true;
+      }
+      if (formGenero && paciente.genero !== formGenero) {
+        paciente.genero = formGenero;
+        necesitaGuardar = true;
+      }
+
+      if (necesitaGuardar) {
+        await paciente.save();
+        console.log('Datos del paciente actualizados.');
+      }
     } else {
       console.log(`Nuevo paciente creado con DNI: ${dniPaciente}, ID: ${paciente.id}`);
     }
@@ -68,7 +89,7 @@ async function procesarNuevaAdmision(req, res) {
     });
 
     console.log('Nueva admisión creada con ID:', nuevaAdmision.id);
-    res.send(`¡Admisión registrada con éxito para el paciente DNI ${paciente.dni}! ID de Admisión: ${nuevaAdmision.id}. (Redirección pendiente)`);
+    res.redirect("/");
 
 
   } catch (error) {

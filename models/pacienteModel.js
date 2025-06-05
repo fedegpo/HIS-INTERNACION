@@ -10,19 +10,24 @@ Paciente.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    primerNombre: {
+    nombrePaciente: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    segundoNombre: {
+    apellidoPaciente: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    dni: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     },
     genero: {
       type: DataTypes.ENUM("M", "F"),
       allowNull: false,
     },
-    fechaDeNacimiento: {
+    fechaNacimientoPaciente: {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
@@ -31,10 +36,10 @@ Paciente.init(
       allowNull: true,
     }
   }, {
-    sequelize,
-    modelName: "Paciente",
-    tableName: "pacientes",
-  }
+  sequelize,
+  modelName: "Paciente",
+  tableName: "pacientes",
+}
 );
 
 module.exports = Paciente;
