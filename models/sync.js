@@ -1,3 +1,5 @@
+const sequelize = require('../db/connection');
+
 const Paciente = require('./pacienteModel');
 const Usuario = require('./usuarioModel');
 const Admision = require('./admisionModel');
