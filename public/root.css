@@ -1,0 +1,9 @@
+:root {
+  --cubic-default: cubic-bezier(.55, .55, .19, .99);
+  --duration-default: 0.8s;
+  --primary-color: #3400D0;
+  --black-base: #292929;
+  --white-base: #f1f1f1;
+  --gray: #c0c0c0;
+  --black-black: #010101;
+}
