@@ -14,6 +14,11 @@ Cama.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    estado: {
+      type: DataTypes.ENUM('Libre', 'Ocupada', 'En Limpieza', 'En Mantenimiento', 'No Disponible'),
+      allowNull: false,
+      defaultValue: 'Libre'
+    },
     disponible: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -22,11 +27,11 @@ Cama.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-  },{
-    sequelize,
-    modelName: "Cama",
-    tableName: "camas",
-  }
+  }, {
+  sequelize,
+  modelName: "Cama",
+  tableName: "camas",
+}
 )
 
 module.exports = Cama;

@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h2= title
+
+  fieldset
+    legend Datos del Paciente
+    p
+      strong Nombre:
+      span= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
+    p
+      strong DNI:
+      span= admision.paciente.dni
+    p
+      strong Género:
+      span= admision.paciente.genero === 'M' ? 'Masculino' : (admision.paciente.genero === 'F' ? 'Femenino' : 'Otro')
+
+  hr
+  form(method="POST", action=`/admisiones/${admision.id}/asignar-cama`)
+    fieldset
+      legend Seleccionar Cama Disponible
+      if camasDisponibles && camasDisponibles.length > 0
+        div.form-group
+          label(for="camaId") Camas Disponibles:
+          select(name="camaId", id="camaId", required)
+            option(value="", disabled, selected) -- Por favor, seleccione una cama --
+            each cama in camasDisponibles
+              option(value=cama.id) #{cama.habitacion.ala.nombre} - Habitación: #{cama.habitacion.numero} - Cama: #{cama.codigo}
+
+        div.form-actions
+          button(type="submit") Asignar Cama Seleccionada
+      else
+        p.warning-message No hay camas disponibles en este momento.

@@ -1,4 +1,4 @@
-const { Admision, Paciente, Usuario } = require('../models/sync');
+const { Admision, Paciente, Usuario, Cama, Habitacion, Ala } = require('../models/sync');
 
 
 async function mostrarFormularioNuevaAdmision(req, res) {
@@ -102,7 +102,89 @@ async function procesarNuevaAdmision(req, res) {
   }
 }
 
+async function mostrarFormularioAsignarCama(req, res) {
+  try {
+    const admisionId = req.params.admisionId;
+
+    const admision = await Admision.findByPk(admisionId, {
+      include: {
+        model: Paciente,
+        as: 'paciente'
+      }
+    });
+
+    if (!admision) {
+      return res.status(404).send('Admisión no encontrada');
+    }
+
+    const camasDisponibles = await Cama.findAll({
+      where: {
+        estado: 'Libre'
+      },
+      include: [
+        {
+          model: Habitacion,
+          as: 'habitacion',
+          include: {
+            model: Ala,
+            as: 'ala'
+          }
+        }
+      ],
+    });
+
+    res.render('admision/asignar_cama', {
+      title: `Asignar Cama para Admisión #${admision.id}`,
+      admision: admision,
+      camasDisponibles: camasDisponibles
+    });
+
+  } catch (error) {
+    console.error("Error al mostrar el formulario de asignar cama:", error);
+    res.status(500).send("Error al cargar la página de asignación de cama.");
+  }
+}
+
+async function procesarAsignacionCama(req, res) {
+  try {
+    const { admisionId } = req.params;
+    const { camaId } = req.body;
+
+    if (!camaId) {
+
+      return res.redirect(`/admisiones/${admisionId}/asignar-cama`);
+    }
+
+    const admision = await Admision.findByPk(admisionId);
+    const cama = await Cama.findByPk(camaId);
+
+    if (!admision || !cama) {
+      return res.status(404).send('Admisión o Cama no encontrada.');
+    }
+    if (cama.estado !== 'Libre') {
+
+      return res.redirect(`/admisiones/${admisionId}/asignar-cama`);
+    }
+
+    admision.camaId = cama.id;
+    cama.estado = 'Ocupada';
+
+    await admision.save();
+    await cama.save();
+
+    console.log(`Cama ID: ${cama.id} asignada a Admisión ID: ${admision.id}`);
+    res.redirect(`/`);
+
+  } catch (error) {
+    console.error("Error al procesar la asignación de cama:", error);
+    res.status(500).send("Error interno al intentar asignar la cama.");
+  }
+}
+
+
 module.exports = {
   mostrarFormularioNuevaAdmision,
-  procesarNuevaAdmision
+  procesarNuevaAdmision,
+  mostrarFormularioAsignarCama,
+  procesarAsignacionCama,
 };

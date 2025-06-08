@@ -7,6 +7,24 @@ const Cama = require('./camaModel');
 const Habitacion = require('./habitacionModel');
 const Ala = require('./alaModel');
 
+Admision.belongsTo(Paciente, {
+  foreignKey: 'pacienteId',
+  as: 'paciente'
+});
+Paciente.hasMany(Admision, {
+  foreignKey: 'pacienteId',
+  as: 'admisiones'
+});
+
+Admision.belongsTo(Usuario, {
+  foreignKey: 'usuarioId',
+  as: 'registradoPor'
+});
+Usuario.hasMany(Admision, {
+  foreignKey: 'usuarioId',
+  as: 'admisionesRegistradas'
+});
+
 Ala.hasMany(Habitacion, { foreignKey: 'alaId', as: 'habitaciones' });
 Habitacion.belongsTo(Ala, { foreignKey: 'alaId', as: 'ala' });
 
