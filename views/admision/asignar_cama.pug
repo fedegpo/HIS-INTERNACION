@@ -1,33 +1,47 @@
 extends ../layout
 
 block content
-  h2= title
+  .row.justify-content-center
+    .col-md-10.col-lg-8
 
-  fieldset
-    legend Datos del Paciente
-    p
-      strong Nombre:
-      span= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
-    p
-      strong DNI:
-      span= admision.paciente.dni
-    p
-      strong Género:
-      span= admision.paciente.genero === 'M' ? 'Masculino' : (admision.paciente.genero === 'F' ? 'Femenino' : 'Otro')
+      .card.shadow-sm
+        .card-header
+          h2.mb-0= title
 
-  hr
-  form(method="POST", action=`/admisiones/${admision.id}/asignar-cama`)
-    fieldset
-      legend Seleccionar Cama Disponible
-      if camasDisponibles && camasDisponibles.length > 0
-        div.form-group
-          label(for="camaId") Camas Disponibles:
-          select(name="camaId", id="camaId", required)
-            option(value="", disabled, selected) -- Por favor, seleccione una cama --
-            each cama in camasDisponibles
-              option(value=cama.id) #{cama.habitacion.ala.nombre} - Habitación: #{cama.habitacion.numero} - Cama: #{cama.codigo}
+        .card-body
+          fieldset.border.p-3.rounded.mb-4
+            legend.w-auto.px-2.fs-5 Datos del Paciente
+            .row
+              .col-sm-6
+                p.mb-1
+                  strong Nombre:
+                  span= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
+              .col-sm-6
+                p.mb-1
+                  strong DNI:
+                  span= admision.paciente.dni
+              .col-sm-6
+                p.mb-1
+                  strong Género:
+                  span= admision.paciente.genero === 'M' ? 'Masculino' : (admision.paciente.genero === 'F' ? 'Femenino' : 'Otro')
 
-        div.form-actions
-          button(type="submit") Asignar Cama Seleccionada
-      else
-        p.warning-message No hay camas disponibles en este momento.
+          form(method="POST", action=`/admisiones/${admision.id}/asignar-cama`)
+            fieldset.border.p-3.rounded
+              legend.w-auto.px-2.fs-5 Seleccionar Cama Disponible
+
+              if camasDisponibles && camasDisponibles.length > 0
+                .mb-3
+                  label.form-label(for="camaId") Camas Disponibles:
+                  select.form-select.form-select-lg(name="camaId", id="camaId", required)
+                    option(value="", disabled, selected) -- Por favor, seleccione una cama --
+                    each cama in camasDisponibles
+                      option(value=cama.id) #{cama.habitacion.ala.nombre} - Habitación: #{cama.habitacion.numero} - Cama: #{cama.codigo}
+
+                .d-grid.mt-4
+                  button.btn.btn-success.btn-lg(type="submit") Asignar Cama Seleccionada
+
+              else
+
+                .alert.alert-warning(role="alert")
+                  h4.alert-heading No hay camas disponibles
+                  p No se encontraron camas con estado "Libre" en este momento. Por favor, intente más tarde o revise el estado de las camas en el módulo de gestión.
