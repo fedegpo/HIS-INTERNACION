@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+  h2.mb-4= title
+
+  .card.shadow-sm
+    .card-body
+      .table-responsive
+        table.table.table-hover.align-middle
+          thead.table-light
+            tr
+              th Cama
+              th Ubicación
+              th Estado
+              th Paciente Ocupante
+              th DNI Paciente
+          tbody
+            if camas && camas.length > 0
+              each cama in camas
+                tr
+                  td.fw-bold= cama.codigo
+                  td= cama.habitacion.ala.nombre + ' - Hab. ' + cama.habitacion.numero
+                  td
+                    case cama.estado
+                      when 'Libre'
+                        span.badge.bg-success= cama.estado
+                      when 'Ocupada'
+                        span.badge.bg-danger= cama.estado
+                      when 'En Limpieza'
+                        span.badge.bg-info.text-dark= cama.estado
+                      default
+                        span.badge.bg-secondary= cama.estado
+
+                  if cama.admisionActual && cama.admisionActual.paciente
+                    td= cama.admisionActual.paciente.nombrePaciente + ' ' + cama.admisionActual.paciente.apellidoPaciente
+                    td= cama.admisionActual.paciente.dni
+                  else
+                    td.text-muted ---
+                    td.text-muted ---
+            else
+              tr
+                td(colspan="5").text-center.py-4 No hay camas registradas en el sistema.

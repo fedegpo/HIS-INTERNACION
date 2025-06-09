@@ -1,16 +1,29 @@
 extends layout
 
 block content
-  h1 Iniciar Sesión
-  if error
-    p.error= error
-  form(method="POST" action="/login")
-    div
-      label(for="nombreUsuario") Nombre de Usuario:
-      input(type="text" id="nombreUsuario" name="nombreUsuario" required)
-    div
-      label(for="contraseña") Contraseña:
-      input(type="password" id="contraseña" name="contraseña" required)
-    button(type="submit") Entrar
-  p ¿No tienes cuenta?
-    a(href="/registro") Regístrate aquí
+  .row.justify-content-center
+    .col-md-6.col-lg-5
+      .card.shadow-lg.border-0.rounded-lg.mt-5
+        .card-header
+          h3.text-center.font-weight-light.my-4 Iniciar Sesión
+        .card-body
+          if error
+            .alert.alert-danger(role="alert")
+              = error
+
+          form(method="POST", action="/login")
+            .mb-3
+              label.form-label(for="nombreUsuario") Nombre de Usuario
+              input.form-control(type="text", id="nombreUsuario", name="nombreUsuario", required, placeholder="Ingresa tu usuario")
+
+            .mb-3
+              label.form-label(for="contraseña") Contraseña
+              input.form-control(type="password", id="contraseña", name="contraseña", required, placeholder="Ingresa tu contraseña")
+
+            .d-grid.mt-4
+              button.btn.btn-primary.btn-lg(type="submit") Entrar
+
+        .card-footer.text-center.py-3
+          .small
+            | ¿No tenes cuenta?
+            a(href="/registro") Regístrate aquí

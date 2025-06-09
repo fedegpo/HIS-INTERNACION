@@ -8,6 +8,7 @@ const sequelize = require('./db/connection');
 const authRoutes = require('./routes/authRoutes');
 const indexRouter = require('./routes/index');
 const admisionRoutes = require('./routes/admisionRoutes');
+const camaRoutes = require('./routes/camaRoutes');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -35,8 +36,9 @@ app.use((req, res, next) => {
 
 //rutas
 app.use('/', indexRouter);
-app.use('/', authRoutes); 
+app.use('/', authRoutes);
 app.use('/admisiones', admisionRoutes);
+app.use('/camas', camaRoutes);
 
 // iniciar servidor
 const PORT = process.env.PORT;

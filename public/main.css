@@ -1,3 +1,13 @@
+:root {
+  --cubic-default: cubic-bezier(.55, .55, .19, .99);
+  --duration-default: 0.6s;
+  --primary-color: #3400D0;
+  --black-base: #292929;
+  --white-base: #f1f1f1;
+  --gray: #c0c0c0;
+  --black-black: #010101;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -26,6 +36,20 @@ button {
   letter-spacing: 0.05em;
 }
 
+.btn.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-family: "Geist Mono", monospace;
+  text-transform: uppercase;
+  transition: all var(--duration-default) var(--cubic-default);
+}
+
+.btn.btn-primary:hover {
+  background-color: #2a00a0;
+  border-color: #2a00a0;
+  transform: scale(1.01);
+}
+
 nav {
   padding: 2rem;
 }
@@ -37,4 +61,60 @@ nav ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+form {
+  margin-top: 20px;
+}
+fieldset {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+legend {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #34495e;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime-local"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+textarea {
+  resize: vertical;
+}
+
+.error-message {
+  color: #c0392b;
+  background-color: #fdd;
+  border: 1px solid #c0392b;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.form-control {
+  border: 1px solid var(--gray);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 0, 208, 0.25);
 }

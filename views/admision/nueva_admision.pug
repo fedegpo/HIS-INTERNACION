@@ -1,57 +1,70 @@
 extends ../layout
 
 block content
-  h2= title
+  .card.shadow-sm
+    .card-header
+      h2.mb-0= title
+    .card-body
+      if error
+        .alert.alert-danger(role="alert")= error
 
-  if error
-    p.error-message(style="color: red;")= error
+      form(method="POST", action="/admisiones/nueva")
+        fieldset.mb-4
+          legend.fs-5.border-bottom.pb-2.mb-3 Datos del Paciente
+          .row
+            .col-md-6
+              .mb-3
+                label.form-label(for="dniPaciente") DNI del Paciente
+                input.form-control(type="text", id="dniPaciente", name="dniPaciente", required, value=formData && formData.dniPaciente ? formData.dniPaciente : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="fechaNacimientoPaciente") Fecha de Nacimiento
+                input.form-control(type="date", id="fechaNacimientoPaciente", name="fechaNacimientoPaciente", required, value=formData && formData.fechaNacimientoPaciente ? formData.fechaNacimientoPaciente : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="nombrePaciente") Nombres del Paciente
+                input.form-control(type="text", id="nombrePaciente", name="nombrePaciente", required, value=formData && formData.nombrePaciente ? formData.nombrePaciente : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="apellidoPaciente") Apellidos del Paciente
+                input.form-control(type="text", id="apellidoPaciente", name="apellidoPaciente", required, value=formData && formData.apellidoPaciente ? formData.apellidoPaciente : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="generoPaciente") Género
+                select.form-select(id="generoPaciente", name="generoPaciente", required)
+                  option(value="", disabled, selected=!(formData && formData.generoPaciente)) Selecciona...
+                  option(value="M", selected=(formData && formData.generoPaciente === 'M')) Masculino
+                  option(value="F", selected=(formData && formData.generoPaciente === 'F')) Femenino
+                  option(value="O", selected=(formData && formData.generoPaciente === 'O')) Otro
 
-  form(method="POST", action="/admisiones/nueva")
+        fieldset.mb-4
+          legend.fs-5.border-bottom.pb-2.mb-3 Datos de la Admisión
+          .row
+            .col-md-6
+              .mb-3
+                label.form-label(for="fechaHoraAdmision") Fecha y Hora de Admisión
+                input.form-control(type="datetime-local", id="fechaHoraAdmision", name="fechaHoraAdmision", required, value=formData && formData.fechaHoraAdmision ? formData.fechaHoraAdmision : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="tipoAdmision") Tipo de Admisión
+                select.form-select(id="tipoAdmision", name="tipoAdmision", required)
+                  option(value="", disabled, selected=!(formData && formData.tipoAdmision)) Selecciona...
+                  option(value="Programada", selected=(formData && formData.tipoAdmision === 'Programada')) Programada
+                  option(value="Derivación Médica", selected=(formData && formData.tipoAdmision === 'Derivación Médica')) Derivación Médica
+                  option(value="Emergencia", selected=(formData && formData.tipoAdmision === 'Emergencia')) Emergencia
+                  option(value="Derivación Guardia", selected=(formData && formData.tipoAdmision === 'Derivación Guardia')) Derivación Guardia
+            .col-md-12
+              .mb-3
+                label.form-label(for="motivoDeAdmision") Motivo de Admisión / Diagnóstico Presuntivo
+                textarea.form-control(id="motivoDeAdmision", name="motivoDeAdmision", rows="3", required)= formData && formData.motivoDeAdmision ? formData.motivoDeAdmision : ''
+            .col-md-6
+              .mb-3
+                label.form-label(for="medicoDerivante") Médico Derivante (si aplica)
+                input.form-control(type="text", id="medicoDerivante", name="medicoDerivante", value=formData && formData.medicoDerivante ? formData.medicoDerivante : '')
+            .col-md-6
+              .mb-3
+                label.form-label(for="datosSeguroMedico") Datos del Seguro Médico
+                input.form-control(type="text", id="datosSeguroMedico", name="datosSeguroMedico", value=formData && formData.datosSeguroMedico ? formData.datosSeguroMedico : '')
 
-    fieldset
-      legend Datos del Paciente
-      div.form-group
-        label(for="dniPaciente") DNI del Paciente:
-        input(type="text", id="dniPaciente", name="dniPaciente", required, value=formData && formData.dniPaciente ? formData.dniPaciente : '')
-      div.form-group
-        label(for="nombrePaciente") Nombres del Paciente:
-        input(type="text", id="nombrePaciente", name="nombrePaciente", required, value=formData && formData.nombrePaciente ? formData.nombrePaciente : '')
-      div.form-group
-        label(for="apellidoPaciente") Apellidos del Paciente:
-        input(type="text", id="apellidoPaciente", name="apellidoPaciente", required, value=formData && formData.apellidoPaciente ? formData.apellidoPaciente : '')
-      div.form-group
-        label(for="fechaNacimientoPaciente") Fecha de Nacimiento:
-        input(type="date", id="fechaNacimientoPaciente", name="fechaNacimientoPaciente", required, value=formData && formData.fechaNacimientoPaciente ? formData.fechaNacimientoPaciente : '')
-      div.form-group
-        label(for="generoPaciente") Género:
-        select(id="generoPaciente", name="generoPaciente", required)
-          option(value="", disabled, selected=!(formData && formData.generoPaciente)) Selecciona...
-          option(value="M", selected=(formData && formData.generoPaciente === 'M')) Masculino
-          option(value="F", selected=(formData && formData.generoPaciente === 'F')) Femenino
-          option(value="O", selected=(formData && formData.generoPaciente === 'O')) Otro
-
-    fieldset
-      legend Datos de la Admisión
-      div.form-group
-        label(for="fechaHoraAdmision") Fecha y Hora de Admisión:
-        input(type="datetime-local", id="fechaHoraAdmision", name="fechaHoraAdmision", required, value=formData && formData.fechaHoraAdmision ? formData.fechaHoraAdmision : '')
-      div.form-group
-        label(for="tipoAdmision") Tipo de Admisión:
-        select(id="tipoAdmision", name="tipoAdmision", required)
-          option(value="", disabled, selected=!(formData && formData.tipoAdmision)) Selecciona...
-          option(value="Programada", selected=(formData && formData.tipoAdmision === 'Programada')) Programada
-          option(value="Derivación Médica", selected=(formData && formData.tipoAdmision === 'Derivación Médica')) Derivación Médica
-          option(value="Emergencia", selected=(formData && formData.tipoAdmision === 'Emergencia')) Emergencia
-          option(value="Derivación Guardia", selected=(formData && formData.tipoAdmision === 'Derivación Guardia')) Derivación Guardia
-      div.form-group
-        label(for="motivoDeAdmision") Motivo de Admisión / Diagnóstico Presuntivo:
-        textarea(id="motivoDeAdmision", name="motivoDeAdmision", rows="4", required)= formData && formData.motivoDeAdmision ? formData.motivoDeAdmision : ''
-      div.form-group
-        label(for="medicoDerivante") Médico Derivante (si aplica):
-        input(type="text", id="medicoDerivante", name="medicoDerivante", value=formData && formData.medicoDerivante ? formData.medicoDerivante : '')
-      div.form-group
-        label(for="datosSeguroMedico") Datos del Seguro Médico (Nombre, N° Póliza, etc.):
-        textarea(id="datosSeguroMedico", name="datosSeguroMedico", rows="3")= formData && formData.datosSeguroMedico ? formData.datosSeguroMedico : ''
-
-    div.form-actions
-      button(type="submit") Registrar Admisión
+        .d-grid.gap-2.mt-4
+          button.btn.btn-primary.btn-lg(type="submit") Registrar Admisión

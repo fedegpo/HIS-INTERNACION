@@ -1,2 +1,38 @@
-extends layout.pug
+extends layout
 
+block content
+  if locals.usuarioLogueado && usuarioLogueado.nombreUsuario
+    .p-5.mb-4.bg-body-tertiary.rounded-3.shadow-sm
+      .container-fluid.py-4
+        h1.display-5.fw-bold Bienvenido, #{usuarioLogueado.nombreUsuario}
+        p.col-md-8.fs-4
+          | Desde aquí puedes gestionar las principales operaciones del sistema hospitalario. Selecciona una de las siguientes opciones para comenzar.
+        a.btn.btn-primary.btn-lg(href="/admisiones/nueva", role="button")
+          | Registrar Nueva Admisión
+    .row.g-4.py-3
+      .col-md-6
+        .card.h-100
+          .card-body
+            h4.card-title.text-primary Admisiones de Pacientes
+            p.card-text
+              | Inicia el flujo de admisión para un nuevo paciente o busca admisiones existentes en el sistema.
+            a.btn.btn-outline-primary(href="/admisiones") Ir a Admisiones
+
+      .col-md-6
+        .card.h-100
+          .card-body
+            h4.card-title.text-primary Gestión de Camas
+            p.card-text
+              | Visualiza el estado de las habitaciones, asigna camas a pacientes admitidos o gestiona la disponibilidad.
+            a.btn.btn-outline-primary(href="/camas") Gestionar Camas
+
+  else
+
+
+    .p-5.text-center.bg-body-tertiary.rounded-3.shadow-sm
+      h1.text-body-emphasis Sistema de Información Hospitalaria
+      p.col-lg-8.mx-auto.fs-5.text-muted
+        | Bienvenido al portal de gestión hospitalaria. Por favor, inicie sesión o regístrese para acceder a las funcionalidades del sistema.
+      .d-inline-flex.gap-2.mb-5
+        a.btn.btn-primary.btn-lg.px-4.rounded-pill(href="/login") Iniciar Sesión
+        a.btn.btn-outline-secondary.btn-lg.px-4.rounded-pill(href="/registro") Registrarse

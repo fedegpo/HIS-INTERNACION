@@ -1,25 +1,31 @@
 extends layout
 
 block content
-  h2= title || 'Crear Nueva Cuenta'
+  .row.justify-content-center
+    .col-md-8.col-lg-6
 
-  if error
-    p.error-message(style="color: red;")= error
+      .card.shadow-lg.border-0.rounded-lg.mt-5
+        .card-header
+          h3.text-center.font-weight-light.my-4= title || 'Crear Nueva Cuenta'
+        .card-body
+          if error
+            .alert.alert-danger(role="alert")= error
+          if success_msg
+            .alert.alert-success(role="alert")= success_msg
 
-  if success_msg
-    p.success-message(style="color: green;")= success_msg
+          form(method="POST", action="/registro")
+            .mb-3
+              label.form-label(for="nombreUsuario") Nombre de Usuario
+              input.form-control(type="text", id="nombreUsuario", name="nombreUsuario", required, placeholder="Elige un nombre de usuario", value=formData && formData.nombreUsuario ? formData.nombreUsuario : '')
 
-  form(method="POST", action="/registro")
-    div.form-group
-      label(for="nombreUsuario") Nombre de Usuario:
-      input(type="text", id="nombreUsuario", name="nombreUsuario", required, value=formData && formData.nombreUsuario ? formData.nombreUsuario : '')
+            .mb-3
+              label.form-label(for="contraseña") Contraseña
+              input.form-control(type="password", id="contraseña", name="contraseña", required, placeholder="Crea una contraseña segura")
 
-    div.form-group
-      label(for="contraseña") Contraseña:
-      input(type="password", id="contraseña", name="contraseña", required)
+            .d-grid.mt-4
+              button.btn.btn-primary.btn-lg(type="submit") Registrarse
 
-    div.form-actions
-      button(type="submit") Registrarse
-
-  p Ya tienes una cuenta?
-    a(href="/login") Inicia Sesión aquí
+        .card-footer.text-center.py-3
+          .small
+            | ¿Ya tenes una cuenta?
+            a(href="/login") Inicia Sesión

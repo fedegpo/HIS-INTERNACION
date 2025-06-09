@@ -181,10 +181,50 @@ async function procesarAsignacionCama(req, res) {
   }
 }
 
+async function listarAdmisiones(req, res) {
+  try {
+    const admisiones = await Admision.findAll({
+      where: { estadoAdmision: 'Activa' },
+
+      include: [
+        {
+          model: Paciente,
+          as: 'paciente',
+          attributes: ['nombrePaciente', 'apellidoPaciente', 'dni']
+        },
+        {
+          model: Cama,
+          as: 'camaAsignada',
+          include: {
+            model: Habitacion,
+            as: 'habitacion',
+            include: {
+              model: Ala,
+              as: 'ala'
+            }
+          }
+        }
+      ],
+      order: [['fechaHoraAdmision', 'DESC']]
+    });
+
+    res.render('admision/lista', {
+      title: 'Admisiones Activas',
+      admisiones: admisiones
+    });
+
+  } catch (error) {
+    console.error("Error al listar las admisiones:", error);
+    res.status(500).send("Error al cargar la lista de admisiones.");
+  }
+}
+
+
 
 module.exports = {
   mostrarFormularioNuevaAdmision,
   procesarNuevaAdmision,
   mostrarFormularioAsignarCama,
   procesarAsignacionCama,
+  listarAdmisiones,
 };
