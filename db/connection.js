@@ -1,5 +1,3 @@
-// D:/his-internacion/db/connection.js
-
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
