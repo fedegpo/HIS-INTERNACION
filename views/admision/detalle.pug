@@ -5,9 +5,9 @@ block content
     h2.mb-0= title
     a.btn.btn-outline-secondary(href="/admisiones") ← Volver al Listado
 
-  .row
+  .row.g-4
     .col-md-7
-      .card.mb-4
+      .card.shadow-sm.mb-4
         .card-header.fw-bold Datos del Paciente
         .card-body
           dl.row.mb-0
@@ -16,17 +16,28 @@ block content
             dt.col-sm-4 Nombre Completo
             dd.col-sm-8= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
             dt.col-sm-4 Fecha de Nacimiento
-            dd.col-sm-8= new Date(admision.paciente.fechaNacimientoPaciente).toLocaleDateString('es-AR')
+            dd.col-sm-8= new Date(admision.paciente.fechaNacimientoPaciente).toLocaleDateString('es-AR', { timeZone: 'UTC' })
             dt.col-sm-4 Género
             dd.col-sm-8= admision.paciente.genero === 'M' ? 'Masculino' : 'Femenino'
 
-      .card
+      .card.shadow-sm
         .card-header.fw-bold Datos de la Admisión
         .card-body
           dl.row.mb-0
-            dt.col-sm-4 Fecha y Hora de Ingreso
-            dd.col-sm-8= new Date(admision.fechaHoraAdmision).toLocaleString('es-AR')
-            dt.col-sm-4 Tipo de Admisión
+            dt.col-sm-4 Estado
+            dd.col-sm-8
+              if admision.estadoAdmision === 'Activa'
+                span.badge.bg-success= admision.estadoAdmision
+              else
+                span.badge.bg-secondary= admision.estadoAdmision
+
+            if admision.estadoAdmision === 'Finalizada'
+              dt.col-sm-4 Fecha de Alta
+              dd.col-sm-8= new Date(admision.fechaHoraAlta).toLocaleString('es-AR', { timeZone: 'UTC' })
+
+            dt.col-sm-4 Ingreso
+            dd.col-sm-8= new Date(admision.fechaHoraAdmision).toLocaleString('es-AR', { timeZone: 'UTC' })
+            dt.col-sm-4 Tipo
             dd.col-sm-8= admision.tipoAdmision
             dt.col-sm-4 Motivo de Admisión
             dd.col-sm-8= admision.motivoDeAdmision
@@ -34,15 +45,13 @@ block content
             dd.col-sm-8= admision.medicoDerivante || 'N/A'
             dt.col-sm-4 Registrado por
             dd.col-sm-8= admision.registradoPor.nombreUsuario
-            dt.col-sm-4 Fecha de Registro
-            dd.col-sm-8= new Date(admision.createdAt).toLocaleString('es-AR')
 
     .col-md-5
-      .card
+      .card.shadow-sm
         .card-header.fw-bold Ubicación y Acciones
         .card-body
           if admision.camaAsignada
-            h5.card-title Ubicación Asignada
+            h5.card-title.text-primary Ubicación Asignada
             dl.row.mb-0
               dt.col-sm-4 Ala
               dd.col-sm-8= admision.camaAsignada.habitacion.ala.nombre
@@ -50,10 +59,23 @@ block content
               dd.col-sm-8= admision.camaAsignada.habitacion.numero
               dt.col-sm-4 Cama
               dd.col-sm-8.fw-bold= admision.camaAsignada.codigo
-            hr
-            a.btn.btn-danger(href="#") Dar de Alta
+
+            hr.my-3
+
+            h5.card-title.mt-3 Acciones
+            if admision.estadoAdmision === 'Activa'
+              form(method="POST", action=`/admisiones/${admision.id}/dar-de-alta`, onsubmit="return confirm('¿Estás seguro de que quieres dar de alta a este paciente?');")
+                .d-grid
+                  button.btn.btn-danger(type="submit") Dar de Alta al Paciente
+            else
+              p.text-muted No hay acciones disponibles para esta admisión.
+
           else
-            h5.card-title Cama no Asignada
-            p.card-text Este paciente aún no tiene una cama asignada.
-            a.btn.btn-success.w-100(href=`/admisiones/${admision.id}/asignar-cama`)
-              | Asignar Cama Ahora
+            h5.card-title.text-warning Cama no Asignada
+            p Este paciente aún necesita una cama.
+
+            if admision.estadoAdmision === 'Activa'
+              .d-grid
+                a.btn.btn-success(href=`/admisiones/${admision.id}/asignar-cama`) Asignar Cama Ahora
+            else
+              p.text-muted No hay acciones disponibles para esta admisión.

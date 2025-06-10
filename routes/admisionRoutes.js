@@ -9,6 +9,7 @@ router.get('/nueva', estaAutenticado, admisionController.mostrarFormularioNuevaA
 router.post('/nueva', estaAutenticado, admisionController.procesarNuevaAdmision);
 
 router.get('/:admisionId', estaAutenticado, admisionController.verDetalleAdmision);
+router.post('/:admisionId/dar-de-alta', estaAutenticado, admisionController.procesarAlta);
 
 router.get('/:admisionId/asignar-cama', estaAutenticado, admisionController.mostrarFormularioAsignarCama);
 router.post('/:admisionId/asignar-cama', estaAutenticado, admisionController.procesarAsignacionCama);

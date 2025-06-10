@@ -51,6 +51,10 @@ Admision.init(
       allowNull: false,
       defaultValue: 'Activa'
     },
+    fechaHoraAlta: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     camaId: {
       type: DataTypes.INTEGER,
       allowNull: true,

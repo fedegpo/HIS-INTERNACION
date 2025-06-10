@@ -1,4 +1,4 @@
-const { Admision, Paciente, Usuario, Cama, Habitacion, Ala } = require('../models/sync');
+const { sequelize, Admision, Paciente, Usuario, Cama, Habitacion, Ala } = require('../models/sync');
 
 
 async function mostrarFormularioNuevaAdmision(req, res) {
@@ -252,6 +252,49 @@ async function verDetalleAdmision(req, res) {
   }
 }
 
+async function procesarAlta(req, res) {
+  const t = await sequelize.transaction();
+
+  try {
+    const { admisionId } = req.params;
+
+    const admision = await Admision.findByPk(admisionId, {
+      include: [{ model: Cama, as: 'camaAsignada' }],
+      transaction: t
+    });
+
+    if (!admision) {
+      await t.rollback();
+      return res.status(404).send('Admisión no encontrada.');
+    }
+    if (admision.estadoAdmision !== 'Activa') {
+      await t.rollback();
+      return res.redirect(`/admisiones/${admisionId}`);
+    }
+
+    admision.estadoAdmision = 'Finalizada';
+    admision.fechaHoraAlta = new Date();
+    await admision.save({ transaction: t });
+
+    if (admision.camaAsignada) {
+      const cama = admision.camaAsignada;
+      cama.estado = 'En Limpieza';
+      await cama.save({ transaction: t });
+    }
+
+    await t.commit();
+    console.log(`Admisión ID: ${admisionId} finalizada exitosamente.`);
+
+    res.redirect(`/admisiones/${admisionId}`);
+
+  } catch (error) {
+    await t.rollback();
+    console.error("Error al procesar el alta:", error);
+    res.redirect(`/admisiones/${req.params.admisionId}`);
+  }
+}
+
+
 
 module.exports = {
   mostrarFormularioNuevaAdmision,
@@ -260,4 +303,5 @@ module.exports = {
   procesarAsignacionCama,
   listarAdmisiones,
   verDetalleAdmision,
+  procesarAlta,
 };
