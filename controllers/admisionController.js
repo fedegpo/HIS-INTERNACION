@@ -219,6 +219,38 @@ async function listarAdmisiones(req, res) {
   }
 }
 
+async function verDetalleAdmision(req, res) {
+  try {
+    const { admisionId } = req.params;
+
+    const admision = await Admision.findByPk(admisionId, {
+      include: [
+        { model: Paciente, as: 'paciente' },
+        { model: Usuario, as: 'registradoPor', attributes: ['nombreUsuario'] },
+        {
+          model: Cama, as: 'camaAsignada', required: false,
+          include: {
+            model: Habitacion, as: 'habitacion',
+            include: { model: Ala, as: 'ala' }
+          }
+        }
+      ]
+    });
+
+    if (!admision) {
+      return res.status(404).render('error', { title: 'Error', mensaje: 'Admisión no encontrada.' });
+    }
+
+    res.render('admision/detalle', {
+      title: `Detalle de Admisión #${admision.id}`,
+      admision: admision
+    });
+
+  } catch (error) {
+    console.error("Error al ver el detalle de la admisión:", error);
+    res.status(500).send("Error al cargar los detalles de la admisión.");
+  }
+}
 
 
 module.exports = {
@@ -227,4 +259,5 @@ module.exports = {
   mostrarFormularioAsignarCama,
   procesarAsignacionCama,
   listarAdmisiones,
+  verDetalleAdmision,
 };

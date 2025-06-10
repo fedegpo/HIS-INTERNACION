@@ -8,6 +8,8 @@ router.get('/', estaAutenticado, admisionController.listarAdmisiones);
 router.get('/nueva', estaAutenticado, admisionController.mostrarFormularioNuevaAdmision);
 router.post('/nueva', estaAutenticado, admisionController.procesarNuevaAdmision);
 
+router.get('/:admisionId', estaAutenticado, admisionController.verDetalleAdmision);
+
 router.get('/:admisionId/asignar-cama', estaAutenticado, admisionController.mostrarFormularioAsignarCama);
 router.post('/:admisionId/asignar-cama', estaAutenticado, admisionController.procesarAsignacionCama);
 
