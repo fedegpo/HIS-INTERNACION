@@ -36,6 +36,12 @@ button {
   letter-spacing: 0.05em;
 }
 
+.btn-outline-primary {
+  font-family: "Geist Mono", monospace;
+  text-transform: uppercase;
+  transition: all var(--duration-default) var(--cubic-default);
+}
+
 .btn.btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
