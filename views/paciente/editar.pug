@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+  .card.shadow-sm
+    .card-header
+      h2.mb-0= title
+    .card-body
+      if error
+        .alert.alert-danger= error
+
+      form(method="POST", action=`/pacientes/${paciente.id}/editar`)
+        fieldset
+          legend Datos Personales
+          .row
+            .col-md-6
+              .mb-3
+                label.form-label(for="dni") DNI
+                input.form-control(type="text", id="dni", name="dni", required, value=paciente.dni)
+            .col-md-6
+              .mb-3
+                label.form-label(for="fechaNacimientoPaciente") Fecha de Nacimiento
+                input.form-control(type="date", id="fechaNacimientoPaciente", name="fechaNacimientoPaciente", required, value=paciente.fechaNacimientoPaciente)
+            .col-md-6
+              .mb-3
+                label.form-label(for="nombrePaciente") Nombres
+                input.form-control(type="text", id="nombrePaciente", name="nombrePaciente", required, value=paciente.nombrePaciente)
+            .col-md-6
+              .mb-3
+                label.form-label(for="apellidoPaciente") Apellidos
+                input.form-control(type="text", id="apellidoPaciente", name="apellidoPaciente", required, value=paciente.apellidoPaciente)
+            .col-md-6
+              .mb-3
+                label.form-label(for="genero") Género
+                select.form-select(id="genero", name="genero", required)
+                  option(value="M", selected=(paciente.genero === 'M')) Masculino
+                  option(value="F", selected=(paciente.genero === 'F')) Femenino
+                  option(value="O", selected=(paciente.genero === 'O')) Otro
+            .col-md-6
+              .mb-3
+                label.form-label(for="numeroCelular") Número de Celular
+                input.form-control(type="text", id="numeroCelular", name="numeroCelular", value=paciente.numeroCelular || '')
+
+        .d-grid.mt-4
+          button.btn.btn-primary.btn-lg(type="submit") Guardar Cambios

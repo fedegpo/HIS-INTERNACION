@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const indexRouter = require('./routes/index');
 const admisionRoutes = require('./routes/admisionRoutes');
 const camaRoutes = require('./routes/camaRoutes');
+const pacienteRoutes = require('./routes/pacienteRoutes');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -39,14 +40,15 @@ app.use('/', indexRouter);
 app.use('/', authRoutes);
 app.use('/admisiones', admisionRoutes);
 app.use('/camas', camaRoutes);
+app.use('/pacientes', pacienteRoutes);
 
 // iniciar servidor
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 sequelize.sync({ alter: true })
   .then(() => {
     console.log('Modelos sincronizados');
-    app.listen(PORT, '::', () => {
-      console.log(`Servidor iniciado en http://localhost:${PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
   })
   .catch((err) => {

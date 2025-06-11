@@ -3,7 +3,9 @@ extends ../layout
 block content
   .d-flex.justify-content-between.align-items-center.mb-4
     h2.mb-0= title
-    a.btn.btn-outline-secondary(href="/admisiones") ← Volver al Listado
+    .d-flex.gap-2
+      a.btn.btn-outline-secondary(href="/admisiones") ← Volver al Listado
+      a.btn.btn-outline-secondary(href=`/pacientes/${admision.paciente.id}/editar`) Editar Paciente
 
   .row.g-4
     .col-md-7
