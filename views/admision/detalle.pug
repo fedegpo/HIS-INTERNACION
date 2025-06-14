@@ -14,7 +14,7 @@ block content
         .card-body
           dl.row.mb-0
             dt.col-sm-4 DNI
-            dd.col-sm-8= admision.paciente.dni
+            dd.col-sm-8= admision.paciente.dni || 'N/A'
             dt.col-sm-4 Nombre Completo
             dd.col-sm-8= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
             dt.col-sm-4 Fecha de Nacimiento
