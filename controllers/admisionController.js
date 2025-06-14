@@ -1,4 +1,5 @@
 const { sequelize, Admision, Paciente, Usuario, Cama, Habitacion, Ala } = require('../models/sync');
+const { Op } = require("sequelize");
 
 
 async function mostrarFormularioNuevaAdmision(req, res) {
@@ -107,36 +108,54 @@ async function mostrarFormularioAsignarCama(req, res) {
     const admisionId = req.params.admisionId;
 
     const admision = await Admision.findByPk(admisionId, {
-      include: {
-        model: Paciente,
-        as: 'paciente'
-      }
+      include: { model: Paciente, as: 'paciente' }
     });
 
     if (!admision) {
       return res.status(404).send('Admisión no encontrada');
     }
+    const generoPacienteActual = admision.paciente.genero;
 
-    const camasDisponibles = await Cama.findAll({
-      where: {
-        estado: 'Libre'
-      },
-      include: [
-        {
-          model: Habitacion,
-          as: 'habitacion',
-          include: {
-            model: Ala,
-            as: 'ala'
-          }
-        }
-      ],
+    const camasLibres = await Cama.findAll({
+      where: { estado: 'Libre' },
+      include: [{
+        model: Habitacion,
+        as: 'habitacion',
+        include: { model: Ala, as: 'ala' }
+      }],
     });
+
+    const camasValidas = [];
+    for (const cama of camasLibres) {
+      if (cama.habitacion.capacidad === 1) {
+        camasValidas.push(cama);
+        continue;
+      }
+
+      const otraCama = await Cama.findOne({
+        where: {
+          habitacionId: cama.habitacionId,
+          id: { [Op.ne]: cama.id }
+        }
+      });
+      if (!otraCama || otraCama.estado === 'Libre' || otraCama.estado === 'En Limpieza') {
+        camasValidas.push(cama);
+      } else {
+        const admisionOcupante = await Admision.findOne({
+          where: { camaId: otraCama.id, estadoAdmision: 'Activa' },
+          include: { model: Paciente, as: 'paciente' }
+        });
+
+        if (!admisionOcupante || admisionOcupante.paciente.genero === generoPacienteActual) {
+          camasValidas.push(cama);
+        }
+      }
+    }
 
     res.render('admision/asignar_cama', {
       title: `Asignar Cama para Admisión #${admision.id}`,
       admision: admision,
-      camasDisponibles: camasDisponibles
+      camasDisponibles: camasValidas
     });
 
   } catch (error) {

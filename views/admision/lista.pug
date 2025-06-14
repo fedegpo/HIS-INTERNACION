@@ -5,7 +5,7 @@ block content
     h2= title
     .d-flex.gap-2
       a.btn.btn-primary(href="/admisiones/nueva") Nueva Admisión Programada
-      a.btn.btn-danger(href="/pacientes/emergencia/nuevo") Ingreso de Emergencia
+      a.btn.btn-danger(href="/pacientes/emergencia/nueva") Ingreso de Emergencia
 
   .card.shadow-sm
     .card-body
@@ -46,7 +46,7 @@ block content
                     if !admision.camaAsignada
                       a.btn.btn-sm.btn-success(href=`/admisiones/${admision.id}/asignar-cama`) Asignar Cama
                     else if admision.tipoAdmision === 'Emergencia' && !admision.paciente.dni
-                      a.btn.btn-sm.btn-warning(href=`/pacientes/${admision.paciente.id}/editar`) Completar Datos
+                      div.btn.btn-sm.btn-warning Completar Datos
 
       else
         .alert.alert-info No hay admisiones activas en este momento.

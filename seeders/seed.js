@@ -16,6 +16,7 @@ async function seed() {
     const habitaciones = await db.Habitacion.bulkCreate([
       { numero: '101', tipo: 'Doble', alaId: alas[0].id },
       { numero: '102', tipo: 'Individual', alaId: alas[0].id },
+      { numero: '103', tipo: 'Doble', alaId: alas[0].id },
       { numero: '201', tipo: 'Doble', alaId: alas[1].id },
       { numero: '301', tipo: 'Individual', alaId: alas[2].id },
     ]);
@@ -24,6 +25,7 @@ async function seed() {
     const hab101 = habitaciones.find(h => h.numero === '101');
     const hab102 = habitaciones.find(h => h.numero === '102');
     const hab201 = habitaciones.find(h => h.numero === '201');
+    const hab103 = habitaciones.find(h => h.numero === '103');
     const hab301 = habitaciones.find(h => h.numero === '301');
 
     const camas = await db.Cama.bulkCreate([
@@ -32,6 +34,8 @@ async function seed() {
       { codigo: '102-A', estado: 'Libre', habitacionId: hab102.id },
       { codigo: '201-A', estado: 'En Limpieza', habitacionId: hab201.id },
       { codigo: '201-B', estado: 'Libre', habitacionId: hab201.id },
+      { codigo: '103-A', estado: 'Libre', habitacionId: hab103.id },
+      { codigo: '103-B', estado: 'Libre', habitacionId: hab103.id },
       { codigo: '301-A', estado: 'En Mantenimiento', habitacionId: hab301.id },
     ]);
     console.log(`${camas.length} camas han sido creadas.`);
