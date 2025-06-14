@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  .container.mt-4
+    .row.justify-content-center
+      .col-md-8
+        .card
+          .card-header.bg-danger.text-white
+            h4.mb-0 #{title}
+          .card-body
+            if error
+              .alert.alert-danger(role='alert')
+                = error
+
+            form(method="POST" action="/pacientes/emergencia/nueva")
+
+              .mb-3
+                label.form-label(for="nombrePaciente") Nombre del Paciente
+                input.form-control(type="text" id="nombrePaciente" name="nombrePaciente" required)
+
+              .mb-3
+                label.form-label(for="apellidoPaciente") Apellido del Paciente
+                input.form-control(type="text" id="apellidoPaciente" name="apellidoPaciente" required)
+
+              .mb-3
+                label.form-label(for="dni") DNI
+                input.form-control(type="text" id="dni" name="dni" aria-describedby="dniHelp")
+                small#dniHelp.form-text.text-muted Dejar en blanco si no se conoce.
+
+              .mb-3
+                label.form-label(for="genero") Género
+                select.form-select(id="genero" name="genero" required)
+                  option(value="" disabled selected) Seleccionar...
+                  option(value="M") Masculino
+                  option(value="F") Femenino
+                  option(value="Otro") Otro
+
+              hr
+
+              .d-grid
+                button.btn.btn-danger.btn-lg(type="submit") Registrar Ingreso y Continuar

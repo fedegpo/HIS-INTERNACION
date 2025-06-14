@@ -7,8 +7,12 @@ block content
         h1.display-5.fw-bold Bienvenido, #{usuarioLogueado.nombreUsuario}
         p.col-md-8.fs-4
           | Desde aquí puedes gestionar las principales operaciones del sistema hospitalario. Selecciona una de las siguientes opciones para comenzar.
-        a.btn.btn-primary.btn-lg(href="/admisiones/nueva", role="button")
-          | Registrar Nueva Admisión
+        .d-flex.gap-2
+          a.btn.btn-primary.btn-lg(href="/admisiones/nueva", role="button")
+            | Registrar Nueva Admisión
+          a.btn.btn-danger.btn-lg(href="/pacientes/emergencia/nueva", role="button")
+            i.fas.fa-bolt.me-2
+            | Ingreso de Emergencia
     .row.g-4.py-3
       .col-md-6
         .card.h-100

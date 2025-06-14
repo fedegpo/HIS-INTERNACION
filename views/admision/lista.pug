@@ -3,8 +3,9 @@ extends ../layout
 block content
   .d-flex.justify-content-between.align-items-center.mb-3
     h2= title
-    a.btn.btn-primary(href="/admisiones/nueva")
-      | Nueva Admisión
+    .d-flex.gap-2
+      a.btn.btn-primary(href="/admisiones/nueva") Nueva Admisión Programada
+      a.btn.btn-danger(href="/pacientes/emergencia/nuevo") Ingreso de Emergencia
 
   .card.shadow-sm
     .card-body
@@ -23,18 +24,29 @@ block content
               each admision in admisiones
                 tr
                   td= admision.id
-                  td= admision.paciente.nombrePaciente + ' ' + admision.paciente.apellidoPaciente
-                  td= admision.paciente.dni
-                  td= new Date(admision.fechaHoraAdmision).toLocaleString('es-AR')
+                  td
+                    | #{admision.paciente.nombrePaciente} #{admision.paciente.apellidoPaciente}
+                    if admision.tipoAdmision === 'Emergencia' && !admision.paciente.dni
+                      span.badge.bg-warning.text-dark.ms-2(title="Este paciente fue ingresado por emergencia y aún no se ha cargado su DNI.") Falta DNI
+
+                  td
+                    if admision.paciente.dni
+                      = admision.paciente.dni
+                    else
+                      span.text-muted.fst-italic No especificado
+
+                  td= new Date(admision.fechaHoraAdmision).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })
                   td
                     if admision.camaAsignada
                       span #{admision.camaAsignada.habitacion.ala.nombre} - Hab. #{admision.camaAsignada.habitacion.numero} - Cama #{admision.camaAsignada.codigo}
                     else
-                      span.text-muted Sin asignar
+                      span.text-muted.fst-italic Sin asignar
                   td
                     a.btn.btn-sm.btn-outline-secondary.me-2(href=`/admisiones/${admision.id}`) Ver Detalle
                     if !admision.camaAsignada
                       a.btn.btn-sm.btn-success(href=`/admisiones/${admision.id}/asignar-cama`) Asignar Cama
+                    else if admision.tipoAdmision === 'Emergencia' && !admision.paciente.dni
+                      a.btn.btn-sm.btn-warning(href=`/pacientes/${admision.paciente.id}/editar`) Completar Datos
 
       else
         .alert.alert-info No hay admisiones activas en este momento.

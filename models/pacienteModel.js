@@ -20,20 +20,25 @@ Paciente.init(
     },
     dni: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true
     },
     genero: {
-      type: DataTypes.ENUM("M", "F"),
+      type: DataTypes.ENUM("M", "F", "Otro"),
       allowNull: false,
     },
     fechaNacimientoPaciente: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     numeroCelular: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    tipoAdmision: {
+      type: DataTypes.ENUM('PROGRAMADO', 'EMERGENCIA'),
+      allowNull: false,
+      defaultValue: 'PROGRAMADO'
     }
   }, {
   sequelize,
