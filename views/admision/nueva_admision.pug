@@ -36,6 +36,10 @@ block content
                   option(value="M", selected=(formData && formData.generoPaciente === 'M')) Masculino
                   option(value="F", selected=(formData && formData.generoPaciente === 'F')) Femenino
                   option(value="O", selected=(formData && formData.generoPaciente === 'O')) Otro
+            .col-md-6
+              .mb-3
+                label.form-label(for="numeroCelular") Teléfono
+                input.form-control(type="tel", id="numeroCelular ", name="numeroCelular", value=formData && formData.numeroCelular ? formData.numeroCelular : '')
 
         fieldset.mb-4
           legend.fs-5.border-bottom.pb-2.mb-3 Datos de la Admisión

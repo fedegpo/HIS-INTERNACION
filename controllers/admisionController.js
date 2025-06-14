@@ -22,6 +22,7 @@ async function procesarNuevaAdmision(req, res) {
       apellidoPaciente: formApellidoPaciente,
       fechaNacimientoPaciente: formFechaNacimiento,
       generoPaciente: formGenero,
+      numeroCelular,
       fechaHoraAdmision,
       motivoDeAdmision,
       tipoAdmision,
@@ -48,6 +49,7 @@ async function procesarNuevaAdmision(req, res) {
         dni: dniPaciente,
         fechaNacimientoPaciente: formFechaNacimiento,
         genero: formGenero,
+        numeroCelular: numeroCelular || null
       }
     });
     paciente = pacienteEncontradoOcreado;
@@ -68,6 +70,11 @@ async function procesarNuevaAdmision(req, res) {
       }
       if (formGenero && paciente.genero !== formGenero) {
         paciente.genero = formGenero;
+        necesitaGuardar = true;
+      }
+
+      if (numeroCelular && paciente.numeroCelular !== numeroCelular) {
+        paciente.numeroCelular = numeroCelular;
         necesitaGuardar = true;
       }
 
@@ -244,7 +251,19 @@ async function verDetalleAdmision(req, res) {
 
     const admision = await Admision.findByPk(admisionId, {
       include: [
-        { model: Paciente, as: 'paciente' },
+        {
+          model: Paciente,
+          as: 'paciente',
+          attributes: [
+            'id',
+            'dni',
+            'nombrePaciente',
+            'apellidoPaciente',
+            'fechaNacimientoPaciente',
+            'genero',
+            'numeroCelular'
+          ]
+        },
         { model: Usuario, as: 'registradoPor', attributes: ['nombreUsuario'] },
         {
           model: Cama, as: 'camaAsignada', required: false,
@@ -253,6 +272,7 @@ async function verDetalleAdmision(req, res) {
             include: { model: Ala, as: 'ala' }
           }
         }
+
       ]
     });
 

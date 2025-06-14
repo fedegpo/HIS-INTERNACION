@@ -21,6 +21,8 @@ block content
             dd.col-sm-8= new Date(admision.paciente.fechaNacimientoPaciente).toLocaleDateString('es-AR', { timeZone: 'UTC' })
             dt.col-sm-4 Género
             dd.col-sm-8= admision.paciente.genero === 'M' ? 'Masculino' : 'Femenino'
+            dt.col-sm-4 Teléfono
+            dd.col-sm-8= admision.paciente.numeroCelular || 'N/A'
 
       .card.shadow-sm
         .card-header.fw-bold Datos de la Admisión
